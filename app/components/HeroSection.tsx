@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Cube3D } from './Cube3D'
 import { SplitTextReveal } from './SplitTextReveal'
 
 export function HeroSection() {
@@ -28,9 +27,6 @@ export function HeroSection() {
 
   return (
     <section id="hero" className="relative min-h-screen w-full flex items-center justify-center px-4 pt-32 pb-20 overflow-hidden bg-transparent">
-      {/* Cube3D Background */}
-      <Cube3D />
-
       {/* Hero Content (z-10) */}
       <div className="relative z-10 w-full max-w-4xl mx-auto">
         <motion.div

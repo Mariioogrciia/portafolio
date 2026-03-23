@@ -4,7 +4,6 @@ import GalaxyBackground from './components/GalaxyBackground'
 import { ScrollProgressBar } from './components/ScrollProgressBar'
 import Navbar from './components/Navbar'
 import { HeroSection } from './components/HeroSection'
-import { StickyZoomSection } from './components/StickyZoomSection'
 import { AboutSection } from './components/AboutSection'
 import { ProjectsGrid } from './components/ProjectsParallaxSection'
 import { TechMarquee } from './components/TechMarquee'
@@ -27,7 +26,6 @@ export default function Home() {
       {/* Main content (z-10) */}
       <div className="relative z-10 pt-16">
         <HeroSection />
-        <StickyZoomSection />
         <AboutSection />
         <ProjectsGrid />
         <TechMarquee />

@@ -41,60 +41,90 @@ export function HorizontalTimeline() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ['start center', 'end center'],
   })
 
-  const xProgress = useTransform(scrollYProgress, [0, 1], ['0%', `-${(timelineItems.length - 1) * 100}%`])
+  const xOffset = useTransform(scrollYProgress, [0, 1], [0, -1200])
 
   return (
-    <div ref={containerRef} className="relative h-[400vh] bg-transparent">
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-transparent">
+    <section ref={containerRef} className="relative py-20 bg-black overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 mb-12">
+        <h2 className="text-4xl font-bold text-white mb-2">Mi Trayectoria</h2>
+        <p className="text-zinc-400">Evolución profesional año a año</p>
+      </div>
+
+      <div className="relative h-96 flex items-center overflow-hidden">
+        {/* Gradientes laterales */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-20 pointer-events-none" />
+
+        {/* Timeline items */}
         <motion.div
-          style={{
-            x: xProgress,
-          } as any}
-          className="flex gap-8 h-full w-max px-8"
+          style={{ x: xOffset }}
+          className="flex gap-6 px-8"
         >
           {timelineItems.map((item, idx) => (
             <motion.div
               key={idx}
-              className="flex-shrink-0 h-full w-96 flex flex-col items-center justify-center text-center"
+              className="flex-shrink-0 w-72 group cursor-default"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
             >
-              {/* Timeline circle */}
-              <div className="relative mb-8">
-                <motion.div
-                  className="w-16 h-16 rounded-full bg-purple-600 border-2 border-purple-400 flex items-center justify-center"
-                  whileHover={{ scale: 1.2 }}
-                >
-                  <span className="text-white font-bold text-sm">{item.year}</span>
-                </motion.div>
-                {idx < timelineItems.length - 1 && (
-                  <div className="absolute top-1/2 left-full w-32 h-1 bg-gradient-to-r from-purple-600 to-transparent" />
-                )}
-              </div>
+              {/* Card */}
+              <motion.div
+                className="relative h-64 rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-transparent p-6 flex flex-col justify-between overflow-hidden"
+                whileHover={{ borderColor: 'rgba(168, 85, 247, 0.8)', scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-purple-600/20 blur-3xl" />
+                </div>
 
-              {/* Content */}
-              <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-              <p className="text-zinc-400 text-sm max-w-xs">{item.description}</p>
+                {/* Year badge */}
+                <motion.div
+                  className="relative z-10 inline-flex w-fit"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <div className="px-3 py-1 rounded-full bg-purple-600/40 border border-purple-500/50">
+                    <span className="text-sm font-semibold text-purple-300">{item.year}</span>
+                  </div>
+                </motion.div>
+
+                {/* Content */}
+                <div className="relative z-10 mt-4">
+                  <h3 className="text-lg font-bold text-white mb-2 line-clamp-2">{item.title}</h3>
+                  <p className="text-sm text-zinc-400 line-clamp-3">{item.description}</p>
+                </div>
+
+                {/* Progress indicator */}
+                <div className="relative z-10 mt-auto">
+                  <div className="w-full h-1 bg-zinc-700/50 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-purple-600 to-purple-400"
+                      initial={{ width: '0%' }}
+                      whileInView={{ width: '100%' }}
+                      transition={{ duration: 1.2, delay: idx * 0.1 }}
+                    />
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center pointer-events-none">
-          <p className="text-zinc-500 text-sm">Desplázate horizontalmente</p>
-          <motion.div
-            animate={{ x: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="mt-2"
-          >
-            →
-          </motion.div>
-        </div>
       </div>
-    </div>
+
+      {/* Timeline line */}
+      <div className="mt-12 max-w-7xl mx-auto px-4">
+        <div className="relative h-1 bg-gradient-to-r from-transparent via-purple-600/30 to-transparent rounded-full" />
+      </div>
+
+      {/* Info text */}
+      <div className="text-center mt-8 text-zinc-500 text-sm">
+        <p>Desplázate para explorar mi evolución profesional</p>
+      </div>
+    </section>
   )
 }
