@@ -54,7 +54,12 @@ export function HeroSection() {
           animate="visible"
         >
           {/* Badge con punto pulsante */}
-          <motion.div variants={itemVariants} className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0 }}
+            className="mb-8"
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-700/30">
               <motion.div
                 className="w-2 h-2 rounded-full bg-green-500"
@@ -66,7 +71,12 @@ export function HeroSection() {
           </motion.div>
 
           {/* Título con SplitTextReveal */}
-          <motion.div variants={itemVariants} className="mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-6"
+          >
             <div
               style={{
                 background: 'linear-gradient(135deg, #ffffff 0%, #e4e4e7 40%, #a78bfa 100%)',
@@ -77,13 +87,18 @@ export function HeroSection() {
             >
               <SplitTextReveal
                 text={'Desarrollador\nFull Stack'}
-                className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight"
+                className="text-7xl sm:text-8xl md:text-9xl font-black text-center leading-none"
               />
             </div>
           </motion.div>
 
           {/* Subtítulo con typing effect */}
-          <motion.div variants={itemVariants} className="mb-12 min-h-16 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mb-12 min-h-16 flex items-center justify-center"
+          >
             <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
               {displayedText}
               {cursorVisible && <span className="animate-pulse">|</span>}
@@ -92,7 +107,9 @@ export function HeroSection() {
 
           {/* Botones */}
           <motion.div
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
             className="flex gap-4 justify-center items-center flex-wrap"
             role="group"
             aria-label="Acciones principales"
@@ -123,6 +140,9 @@ export function HeroSection() {
 
       {/* Scroll Indicator */}
       <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1 }}
         style={{ opacity: scrollOpacity }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >

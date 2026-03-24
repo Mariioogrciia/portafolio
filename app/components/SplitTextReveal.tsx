@@ -33,8 +33,7 @@ export function SplitTextReveal({ text, className = '' }: SplitTextRevealProps) 
       className={className}
       variants={containerVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.5 }}
+      animate="visible"
       style={{
         perspective: '800px',
         display: 'block',
