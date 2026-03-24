@@ -7,10 +7,12 @@ const technologies = ['React', 'Python', 'Next.js', 'Azure', 'TypeScript', 'SQL'
 
 export function Cube3D() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollY } = useScroll()
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+  })
 
-  const scale = useTransform(scrollY, [0, 400], [1, 0.3])
-  const opacity = useTransform(scrollY, [0, 500], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.3])
+  const opacity = useTransform(scrollYProgress, [0, 0.25], [1, 0])
 
   return (
     <motion.div

@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef } from 'react'
 import GalaxyBackground from './components/GalaxyBackground'
 import { ScrollProgressBar } from './components/ScrollProgressBar'
 import Navbar from './components/Navbar'
@@ -14,6 +15,8 @@ import { Footer } from './components/Footer'
 import { ScrollToTopButton } from './components/ScrollToTopButton'
 
 export default function Home() {
+  const contentRef = useRef<HTMLDivElement>(null)
+
   return (
     <main className="relative w-full overflow-hidden bg-black">
       {/* Fixed background canvas (z-0) */}
@@ -23,13 +26,13 @@ export default function Home() {
       <Navbar />
 
       {/* Fixed scroll progress bar (z-50) */}
-      <ScrollProgressBar />
+      <ScrollProgressBar contentRef={contentRef} />
 
       {/* Scroll to top button (z-40) */}
       <ScrollToTopButton />
 
       {/* Main content (z-10) */}
-      <div className="relative z-10 pt-16">
+      <div ref={contentRef} className="relative z-10 pt-16">
         <HeroSection />
         <AboutSection />
         <ProjectsGrid />

@@ -118,7 +118,7 @@ export default function Navbar() {
                       layoutId="activeIndicator"
                       className="absolute bottom-0 left-0 right-0 h-1 bg-purple-500 rounded-full"
                       initial={false}
-                      transition={{ duration: 0.3, type: 'spring', stiffness: 380, damping: 40 }}
+                      transition={{ duration: 0.3 }}
                     />
                   )}
                 </motion.a>

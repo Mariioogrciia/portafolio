@@ -1,9 +1,16 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { RefObject } from 'react'
 
-export function ScrollProgressBar() {
-  const { scrollYProgress } = useScroll()
+interface ScrollProgressBarProps {
+  contentRef?: RefObject<HTMLDivElement | null>
+}
+
+export function ScrollProgressBar({ contentRef }: ScrollProgressBarProps) {
+  const { scrollYProgress } = useScroll({
+    target: contentRef,
+  })
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (

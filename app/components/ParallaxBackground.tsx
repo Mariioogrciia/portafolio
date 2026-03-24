@@ -1,11 +1,17 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { RefObject, useRef } from 'react'
 
-export function ParallaxBlobs() {
+interface ParallaxBlobsProps {
+  mainRef?: RefObject<HTMLDivElement | null>
+}
+
+export function ParallaxBlobs({ mainRef }: ParallaxBlobsProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll()
+  const { scrollYProgress } = useScroll({
+    target: mainRef || containerRef,
+  })
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, 300])
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -250])

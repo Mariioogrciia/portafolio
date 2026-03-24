@@ -8,8 +8,10 @@ import { Cube3D } from './Cube3D'
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const { scrollY } = useScroll()
-  const scrollOpacity = useTransform(scrollY, [0, 300], [1, 0])
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+  })
+  const scrollOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0])
 
   const { displayedText, cursorVisible } = useTypingEffect(
     'Especializado en React, Next.js, Python y Azure.',
@@ -75,7 +77,7 @@ export function HeroSection() {
               }}
             >
               <SplitTextReveal
-                text="Desarrollador Full Stack"
+                text={'Desarrollador\nFull Stack'}
                 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight"
               />
             </div>

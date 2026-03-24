@@ -1,9 +1,16 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Github, Linkedin, Mail } from 'lucide-react'
+import { useState } from 'react'
+import { useParticleExplosion } from '@/app/hooks/useParticleExplosion'
+import { ParticleExplosion } from './ParticleExplosion'
 
 export function ContactSectionNew() {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [showSuccess, setShowSuccess] = useState(false)
+  const { particles, triggerExplosion } = useParticleExplosion()
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -40,15 +47,36 @@ export function ContactSectionNew() {
     {
       icon: Mail,
       label: 'Email',
-      url: 'mario.garciaromero16@gmail.com',
+      url: 'mailto:mario.garciaromero16@gmail.com',
       color: 'hover:text-purple-400',
     },
   ]
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (formData.name && formData.email && formData.message) {
+      triggerExplosion(e as any)
+      setShowSuccess(true)
+      setFormData({ name: '', email: '', message: '' })
+
+      setTimeout(() => {
+        setShowSuccess(false)
+      }, 4000)
+    }
+  }
+
   return (
     <section id="contact" className="relative min-h-screen w-full flex items-center justify-center px-4 py-20 bg-transparent z-10">
+      <ParticleExplosion particles={particles} />
+
       <motion.div
-        className="max-w-2xl mx-auto text-center"
+        className="max-w-2xl mx-auto w-full"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -56,35 +84,105 @@ export function ContactSectionNew() {
       >
         <motion.h2
           variants={itemVariants}
-          className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6"
+          className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 text-center"
         >
           Hablemos de tu
           <br />
           próximo proyecto
         </motion.h2>
 
-        <motion.p variants={itemVariants} className="text-lg text-zinc-400 mb-12 max-w-xl mx-auto">
+        <motion.p
+          variants={itemVariants}
+          className="text-lg text-zinc-400 mb-12 max-w-xl mx-auto text-center"
+        >
           Estoy disponible para nuevos proyectos y colaboraciones. Contactame para discutir tu idea.
         </motion.p>
 
-        <motion.div variants={itemVariants} className="flex gap-4 justify-center flex-wrap">
+        {/* Formulario */}
+        <motion.form
+          variants={itemVariants}
+          onSubmit={handleSubmit}
+          className="space-y-4 mb-12"
+        >
+          {/* Nombre */}
+          <input
+            type="text"
+            name="name"
+            placeholder="Tu nombre"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300"
+            required
+          />
+
+          {/* Email */}
+          <input
+            type="email"
+            name="email"
+            placeholder="Tu email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300"
+            required
+          />
+
+          {/* Mensaje */}
+          <textarea
+            name="message"
+            placeholder="Tu mensaje"
+            value={formData.message}
+            onChange={handleChange}
+            rows={5}
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300 resize-none"
+            required
+          />
+
+          {/* Botón Enviar */}
+          <motion.button
+            type="submit"
+            className="w-full py-3 px-6 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Enviar mensaje
+          </motion.button>
+        </motion.form>
+
+        {/* Mensaje de éxito */}
+        <AnimatePresence>
+          {showSuccess && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="text-center text-green-400 font-semibold mb-8"
+            >
+              ¡Mensaje enviado! Te responderé pronto 🚀
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Links rápidos */}
+        <motion.div variants={itemVariants} className="flex gap-4 justify-center flex-wrap mb-12">
           <motion.a
-            href="mailto:mario@example.com"
-            className="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-lg border border-purple-500/30 hover:border-purple-400 transition-all duration-300 flex items-center gap-2"
+            href="mailto:mario.garciaromero16@gmail.com"
+            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-lg border border-purple-500/30 hover:border-purple-400 transition-all duration-300 flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500"
             whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(168, 85, 247, 0.3)' }}
             whileTap={{ scale: 0.95 }}
+            aria-label="Enviar email directamente"
           >
             <Mail className="w-5 h-5" />
             Enviar Email
           </motion.a>
 
           <motion.a
-            href="https://linkedin.com/in/mariogarcíaa"
+            href="https://linkedin.com/in/mario-garcia-romero-453348304"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-4 border border-zinc-700 text-zinc-300 font-semibold rounded-lg hover:border-purple-500/50 hover:text-purple-300 transition-all duration-300 flex items-center gap-2"
+            className="px-6 py-3 border border-zinc-700 text-zinc-300 font-semibold rounded-lg hover:border-purple-500/50 hover:text-purple-300 transition-all duration-300 flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            aria-label="Ir a LinkedIn"
           >
             <Linkedin className="w-5 h-5" />
             Ver LinkedIn
@@ -92,19 +190,23 @@ export function ContactSectionNew() {
         </motion.div>
 
         {/* Links sociales con iconos */}
-        <motion.div variants={itemVariants} className="mt-16 pt-16 border-t border-white/10 flex gap-8 justify-center">
+        <motion.div
+          variants={itemVariants}
+          className="pt-12 border-t border-white/10 flex gap-8 justify-center"
+        >
           {socialLinks.map((social) => {
             const Icon = social.icon
             return (
               <motion.a
                 key={social.label}
                 href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`text-zinc-400 transition-colors duration-300 ${social.color}`}
+                target={social.url.startsWith('mailto') ? undefined : '_blank'}
+                rel={social.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                className={`text-zinc-400 transition-colors duration-300 ${social.color} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 rounded-lg p-2`}
                 whileHover={{ scale: 1.2, y: -5 }}
                 whileTap={{ scale: 0.95 }}
                 title={social.label}
+                aria-label={social.label}
               >
                 <Icon className="w-8 h-8" />
               </motion.a>
@@ -113,7 +215,7 @@ export function ContactSectionNew() {
         </motion.div>
 
         {/* Texto adicional */}
-        <motion.p variants={itemVariants} className="mt-8 text-sm text-zinc-500">
+        <motion.p variants={itemVariants} className="mt-8 text-sm text-zinc-500 text-center">
           Sígueme en mis redes sociales
         </motion.p>
       </motion.div>

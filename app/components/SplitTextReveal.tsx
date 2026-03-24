@@ -8,7 +8,7 @@ interface SplitTextRevealProps {
 }
 
 export function SplitTextReveal({ text, className = '' }: SplitTextRevealProps) {
-  const letters = text.split('')
+  const lines = text.split('\n')
 
   const containerVariants = {
     hidden: {},
@@ -37,20 +37,24 @@ export function SplitTextReveal({ text, className = '' }: SplitTextRevealProps) 
       viewport={{ once: true, amount: 0.5 }}
       style={{
         perspective: '800px',
-        display: 'inline-block',
+        display: 'block',
       } as any}
     >
-      {letters.map((letter, i) => (
-        <motion.span
-          key={i}
-          variants={letterVariants}
-          className="inline-block will-change-transform"
-          style={{
-            transformStyle: 'preserve-3d' as any,
-          }}
-        >
-          {letter === ' ' ? '\u00A0' : letter}
-        </motion.span>
+      {lines.map((line, lineIndex) => (
+        <div key={lineIndex} style={{ display: 'block' }}>
+          {line.split('').map((letter, letterIndex) => (
+            <motion.span
+              key={`${lineIndex}-${letterIndex}`}
+              variants={letterVariants}
+              className="inline-block will-change-transform"
+              style={{
+                transformStyle: 'preserve-3d' as any,
+              }}
+            >
+              {letter === ' ' ? '\u00A0' : letter}
+            </motion.span>
+          ))}
+        </div>
       ))}
     </motion.div>
   )

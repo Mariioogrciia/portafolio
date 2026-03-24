@@ -6,15 +6,15 @@ const technologies = [
   'React',
   'Next.js',
   'TypeScript',
+  'Python',
   'Tailwind CSS',
   'Node.js',
-  'PostgreSQL',
-  'Framer Motion',
-  'Firebase',
-  'GraphQL',
+  'Azure ML',
+  'Document Intelligence',
+  'Supabase',
+  'SQL',
+  'Git',
   'Vercel',
-  'AWS',
-  'Docker',
 ]
 
 export function TechMarquee() {
