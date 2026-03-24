@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useScrollDirection } from '@/app/hooks/useScrollDirection'
 import { useActiveSection } from '@/app/hooks/useActiveSection'
@@ -77,13 +77,18 @@ export default function Navbar() {
                   >
                     {link.label}
                   </motion.a>
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-400 rounded-full"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        key={link.id}
+                        initial={{ opacity: 0, scaleX: 0 }}
+                        animate={{ opacity: 1, scaleX: 1 }}
+                        exit={{ opacity: 0, scaleX: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-400 rounded-full origin-left"
+                      />
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )
             })}
