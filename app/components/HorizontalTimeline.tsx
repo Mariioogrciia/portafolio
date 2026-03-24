@@ -44,7 +44,7 @@ export function HorizontalTimeline() {
     offset: ['start center', 'end center'],
   })
 
-  const xOffset = useTransform(scrollYProgress, [0, 1], [0, -1200])
+  const xOffset = useTransform(scrollYProgress, [0, 1], [0, -500])
 
   return (
     <section ref={containerRef} className="relative py-20 bg-black overflow-hidden">
