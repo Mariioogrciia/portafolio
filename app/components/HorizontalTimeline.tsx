@@ -11,22 +11,17 @@ interface TimelineItem {
 
 const timelineItems: TimelineItem[] = [
   {
-    year: '2022',
-    title: 'Inicio en programación',
-    description: 'Primeros pasos con HTML, CSS y JavaScript',
-  },
-  {
     year: '2023',
-    title: 'Proyecto de fútbol sala',
-    description: 'Dashboard de estadísticas con React',
+    title: 'Finalizacion de Bachillerato e Inicio en programación',
+    description: 'Primeros pasos con HTML, CSS y Java',
   },
   {
-    year: '2024',
+    year: '2025',
     title: 'DAM completado',
     description: 'Desarrollo de Aplicaciones Multiplataforma',
   },
   {
-    year: '2025',
+    year: '2025/2026',
     title: 'Certificaciones Azure',
     description: 'AI Engineer, Fabric, Database, Fundamentals',
   },
@@ -44,7 +39,7 @@ export function HorizontalTimeline() {
     offset: ['start center', 'end center'],
   })
 
-  const xOffset = useTransform(scrollYProgress, [0, 1], [0, -500])
+  const xOffset = useTransform(scrollYProgress, [0, 1], ['10%', '-70%'])
 
   return (
     <section ref={containerRef} className="relative py-20 bg-black overflow-hidden">
@@ -53,7 +48,7 @@ export function HorizontalTimeline() {
         <p className="text-zinc-400">Evolución profesional año a año</p>
       </div>
 
-      <div className="relative h-96 flex items-center overflow-hidden">
+      <div className="relative h-96 flex items-center overflow-visible">
         {/* Gradientes laterales */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-20 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-20 pointer-events-none" />
@@ -61,7 +56,7 @@ export function HorizontalTimeline() {
         {/* Timeline items */}
         <motion.div
           style={{ x: xOffset }}
-          className="flex gap-6 px-8"
+          className="flex gap-6 pl-[calc(50vw-140px)] pr-[calc(50vw-140px)]"
         >
           {timelineItems.map((item, idx) => (
             <motion.div
