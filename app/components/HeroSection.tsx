@@ -3,7 +3,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { useTypingEffect } from '@/app/hooks/useTypingEffect'
-import { SplitTextReveal } from './SplitTextReveal'
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -70,27 +69,16 @@ export function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Título con SplitTextReveal */}
-          <motion.div
+          {/* Título principal */}
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mb-6"
+            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            className="text-7xl sm:text-8xl md:text-9xl font-black text-center text-white leading-none tracking-tight mb-6"
           >
-            <div
-              style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #e4e4e7 40%, #a78bfa 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              <SplitTextReveal
-                text={'Desarrollador\nFull Stack'}
-                className="text-7xl sm:text-8xl md:text-9xl font-black text-center leading-none"
-              />
-            </div>
-          </motion.div>
+            Desarrollador<br />
+            <span className="text-purple-400">Full Stack</span>
+          </motion.h1>
 
           {/* Subtítulo con typing effect */}
           <motion.div
