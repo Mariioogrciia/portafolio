@@ -2,230 +2,319 @@
 
 import { useEffect, useRef } from 'react'
 
-interface Particle {
+// TypeScript Interfaces
+interface Star {
   x: number
   y: number
   vx: number
   vy: number
-  size: number
+  radius: number
   opacity: number
-  baseOpacity: number
+  targetOpacity: number
   color: string
-  isStar: boolean
-  phaseOffset: number
+  originX: number
+  originY: number
+}
+
+interface GridPoint {
+  x: number
+  y: number
+  originX: number
+  originY: number
+  opacity: number
+}
+
+interface Meteor {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  length: number
+  opacity: number
+  color: string
 }
 
 interface CursorState {
   x: number
   y: number
   active: boolean
-  fadeOut: number
 }
 
 export default function GalaxyBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const particlesRef = useRef<Particle[]>([])
+  const starsRef = useRef<Star[]>([])
+  const gridPointsRef = useRef<GridPoint[]>([])
+  const meteorsRef = useRef<Meteor[]>([])
   const cursorRef = useRef<CursorState>({
-    x: 0,
-    y: 0,
+    x: -1000,
+    y: -1000,
     active: false,
-    fadeOut: 0,
   })
+  const lastMeteorTimeRef = useRef<number>(0)
   const animationIdRef = useRef<number | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const ctx = canvas.getContext('2d', { willReadFrequently: true })
+    const ctx = canvas.getContext('2d', { alpha: false })
     if (!ctx) return
 
-    // Set canvas size
+    const dpr = window.devicePixelRatio || 1
+
+    // Set canvas size with device pixel ratio
     const setCanvasSize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      canvas.width = window.innerWidth * dpr
+      canvas.height = window.innerHeight * dpr
+      ctx.scale(dpr, dpr)
     }
     setCanvasSize()
 
-    // Colors for particles
-    const colors = [
-      '#ffffff',
-      '#c084fc',
-      '#a855f7',
-      '#7c3aed',
-      '#e9d5ff',
-    ]
+    const width = window.innerWidth
+    const height = window.innerHeight
+    const isMobile = width < 768
 
-    // Initialize particles (250-300)
-    const initializeParticles = () => {
-      particlesRef.current = []
+    // Initialize stars (250 particles)
+    const initializeStars = () => {
+      starsRef.current = []
+      const starColors = ['#ffffff', '#c084fc', '#a855f7']
 
-      // Regular particles (280 total)
-      for (let i = 0; i < 280; i++) {
-        particlesRef.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          size: Math.random() * 2 + 0.5,
-          opacity: Math.random() * 0.7 + 0.2,
-          baseOpacity: Math.random() * 0.7 + 0.2,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          isStar: false,
-          phaseOffset: Math.random() * Math.PI * 2,
-        })
-      }
-
-      // Bright stars (12 total, larger)
-      for (let i = 0; i < 12; i++) {
-        particlesRef.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+      for (let i = 0; i < 250; i++) {
+        starsRef.current.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
           vx: (Math.random() - 0.5) * 0.2,
           vy: (Math.random() - 0.5) * 0.2,
-          size: 4,
-          opacity: Math.random() * 0.3 + 0.7,
-          baseOpacity: Math.random() * 0.3 + 0.7,
-          color: '#ffffff',
-          isStar: true,
-          phaseOffset: Math.random() * Math.PI * 2,
+          radius: Math.random() * 1.5 + 0.5,
+          opacity: Math.random() * 0.6 + 0.3,
+          targetOpacity: Math.random() * 0.6 + 0.3,
+          color: starColors[Math.floor(Math.random() * starColors.length)],
+          originX: Math.random() * width,
+          originY: Math.random() * height,
         })
       }
     }
 
-    initializeParticles()
+    // Initialize grid points
+    const initializeGridPoints = () => {
+      gridPointsRef.current = []
+      const cols = isMobile ? 40 : 80
+      const rows = isMobile ? 22 : 45
+      const cellWidth = width / cols
+      const cellHeight = height / rows
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          gridPointsRef.current.push({
+            x: i * cellWidth + cellWidth / 2,
+            y: j * cellHeight + cellHeight / 2,
+            originX: i * cellWidth + cellWidth / 2,
+            originY: j * cellHeight + cellHeight / 2,
+            opacity: 0.4,
+          })
+        }
+      }
+    }
+
+    initializeStars()
+    initializeGridPoints()
 
     // Mouse move handler
     const handleMouseMove = (e: MouseEvent) => {
       cursorRef.current.x = e.clientX
       cursorRef.current.y = e.clientY
       cursorRef.current.active = true
-      cursorRef.current.fadeOut = 1
     }
 
     // Mouse leave handler
     const handleMouseLeave = () => {
       cursorRef.current.active = false
+      cursorRef.current.x = -1000
+      cursorRef.current.y = -1000
+    }
+
+    // Resize handler
+    const handleResize = () => {
+      setCanvasSize()
     }
 
     // Animation loop
     const animate = (time: number) => {
-      // Draw gradient background (negro abajo, morado oscuro en centro, negro arriba)
-      const gradientBg = ctx.createLinearGradient(0, 0, 0, canvas.height)
-      gradientBg.addColorStop(0, '#000000')
-      gradientBg.addColorStop(0.5, '#1a0035')
-      gradientBg.addColorStop(1, '#000000')
-      ctx.fillStyle = gradientBg
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      // Draw black background
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, width, height)
 
-      // Draw static nebula
-      const nebulaCenterX = canvas.width * 0.25
-      const nebulaCenterY = canvas.height * 0.4
-      const nebulaGradient = ctx.createRadialGradient(
-        nebulaCenterX,
-        nebulaCenterY,
+      // Effect 3: Black hole gradient (pulsing center)
+      const blackHoleCenterX = width * 0.5
+      const blackHoleCenterY = height * 0.55
+      const baseRadius = height * 0.45
+      const pulsing = Math.sin(time * 0.0005) * 0.1
+      const blackHoleRadius = baseRadius * (1 + pulsing)
+
+      const blackHoleGradient = ctx.createRadialGradient(
+        blackHoleCenterX,
+        blackHoleCenterY,
         0,
-        nebulaCenterX,
-        nebulaCenterY,
-        300
+        blackHoleCenterX,
+        blackHoleCenterY,
+        blackHoleRadius
       )
-      nebulaGradient.addColorStop(0, 'rgba(126, 34, 206, 0.15)')
-      nebulaGradient.addColorStop(1, 'rgba(126, 34, 206, 0)')
-      ctx.fillStyle = nebulaGradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      blackHoleGradient.addColorStop(0, 'rgba(0, 0, 0, 0)')
+      blackHoleGradient.addColorStop(0.3, 'rgba(88, 28, 163, 0.08)')
+      blackHoleGradient.addColorStop(0.5, 'rgba(139, 92, 246, 0.12)')
+      blackHoleGradient.addColorStop(0.7, 'rgba(88, 28, 163, 0.06)')
+      blackHoleGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
 
-      // Draw cursor glow
-      if (cursorRef.current.fadeOut > 0) {
-        const cursorGradient = ctx.createRadialGradient(
-          cursorRef.current.x,
-          cursorRef.current.y,
-          0,
-          cursorRef.current.x,
-          cursorRef.current.y,
-          200
-        )
-        cursorGradient.addColorStop(
-          0,
-          `rgba(168, 85, 247, ${0.3 * cursorRef.current.fadeOut})`
-        )
-        cursorGradient.addColorStop(
-          1,
-          `rgba(168, 85, 247, 0)`
-        )
-        ctx.fillStyle = cursorGradient
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillStyle = blackHoleGradient
+      ctx.beginPath()
+      ctx.arc(
+        blackHoleCenterX,
+        blackHoleCenterY,
+        blackHoleRadius,
+        0,
+        Math.PI * 2
+      )
+      ctx.fill()
 
-        // Fade out glow when mouse is inactive
-        if (!cursorRef.current.active) {
-          cursorRef.current.fadeOut *= 0.95
-        }
-      }
+      // Core nucleus
+      const coreGradient = ctx.createRadialGradient(
+        blackHoleCenterX,
+        blackHoleCenterY,
+        0,
+        blackHoleCenterX,
+        blackHoleCenterY,
+        80
+      )
+      coreGradient.addColorStop(0, 'rgba(167, 139, 250, 0.15)')
+      coreGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
+      ctx.fillStyle = coreGradient
+      ctx.beginPath()
+      ctx.arc(blackHoleCenterX, blackHoleCenterY, 80, 0, Math.PI * 2)
+      ctx.fill()
 
-      // Update and draw particles
-      particlesRef.current.forEach((particle) => {
+      // Effect 1: Draw and update stars
+      starsRef.current.forEach((star) => {
         // Calculate distance from cursor
-        const dx = particle.x - cursorRef.current.x
-        const dy = particle.y - cursorRef.current.y
+        const dx = star.x - cursorRef.current.x
+        const dy = star.y - cursorRef.current.y
         const distance = Math.sqrt(dx * dx + dy * dy)
 
-        // Repulsion effect
+        // Cursor repulsion (120px radius, 25px force)
         const repulsionRadius = 120
-        if (distance < repulsionRadius && cursorRef.current.fadeOut > 0.1) {
+        if (distance < repulsionRadius && cursorRef.current.active) {
           const angle = Math.atan2(dy, dx)
-          const force =
-            (1 - distance / repulsionRadius) * 0.3 * cursorRef.current.fadeOut
-          particle.vx += Math.cos(angle) * force
-          particle.vy += Math.sin(angle) * force
+          const force = ((repulsionRadius - distance) / repulsionRadius) * 25
+          star.vx += Math.cos(angle) * (force / 100)
+          star.vy += Math.sin(angle) * (force / 100)
         }
 
         // Apply velocity
-        particle.x += particle.vx
-        particle.y += particle.vy
+        star.x += star.vx
+        star.y += star.vy
 
         // Wrap around edges
-        if (particle.x < 0) particle.x = canvas.width
-        if (particle.x > canvas.width) particle.x = 0
-        if (particle.y < 0) particle.y = canvas.height
-        if (particle.y > canvas.height) particle.y = 0
+        if (star.x < 0) star.x = width
+        if (star.x > width) star.x = 0
+        if (star.y < 0) star.y = height
+        if (star.y > height) star.y = 0
 
-        // Apply friction
-        particle.vx *= 0.98
-        particle.vy *= 0.98
-
-        // Flickering opacity with phase offset
-        const flicker = Math.sin(time * 0.002 + particle.phaseOffset) * 0.3
-        particle.opacity = Math.max(0.1, particle.baseOpacity + flicker)
-
-        // Draw star with halo
-        if (particle.isStar) {
-          const haloGradient = ctx.createRadialGradient(
-            particle.x,
-            particle.y,
-            0,
-            particle.x,
-            particle.y,
-            particle.size * 4
-          )
-          haloGradient.addColorStop(0, `rgba(255, 255, 255, ${particle.opacity * 0.4})`)
-          haloGradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
-          ctx.fillStyle = haloGradient
-          ctx.beginPath()
-          ctx.arc(particle.x, particle.y, particle.size * 4, 0, Math.PI * 2)
-          ctx.fill()
+        // Lerp back to origin when not repelled
+        if (distance > repulsionRadius || !cursorRef.current.active) {
+          star.x += (star.originX - star.x) * 0.002
+          star.y += (star.originY - star.y) * 0.002
         }
 
-        // Draw particle
-        if (particle.color.startsWith('#')) {
-          const hex = particle.color
-          const r = parseInt(hex.slice(1, 3), 16)
-          const g = parseInt(hex.slice(3, 5), 16)
-          const b = parseInt(hex.slice(5, 7), 16)
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${particle.opacity})`
-        }
+        // Damping
+        star.vx *= 0.98
+        star.vy *= 0.98
 
+        // Twinkling effect
+        star.targetOpacity += (Math.random() - 0.5) * 0.02
+        star.targetOpacity = Math.max(0.1, Math.min(1, star.targetOpacity))
+        star.opacity += (star.targetOpacity - star.opacity) * 0.1
+
+        // Draw star
+        ctx.fillStyle = `${star.color}${Math.floor(star.opacity * 255).toString(16).padStart(2, '0')}`
         ctx.beginPath()
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2)
         ctx.fill()
+      })
+
+      // Effect 1: Draw and update grid points (force field)
+      gridPointsRef.current.forEach((point) => {
+        // Calculate distance from cursor
+        const dx = point.x - cursorRef.current.x
+        const dy = point.y - cursorRef.current.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+
+        // Cursor repulsion
+        const repulsionRadius = 120
+        if (distance < repulsionRadius && cursorRef.current.active) {
+          const angle = Math.atan2(dy, dx)
+          const force = (repulsionRadius - distance) / repulsionRadius * 25
+          point.x += Math.cos(angle) * force
+          point.y += Math.sin(angle) * force
+          point.opacity = 1
+        } else {
+          // Lerp back to origin
+          point.x += (point.originX - point.x) * 0.08
+          point.y += (point.originY - point.y) * 0.08
+          point.opacity += (0.4 - point.opacity) * 0.1
+        }
+
+        // Draw grid point
+        ctx.fillStyle = `rgba(168, 85, 247, ${point.opacity})`
+        ctx.beginPath()
+        ctx.arc(point.x, point.y, 1.5, 0, Math.PI * 2)
+        ctx.fill()
+      })
+
+      // Effect 2: Spawn meteorites (every 2500ms, max 3 simultaneous)
+      if (time - lastMeteorTimeRef.current > 2500 && !isMobile && meteorsRef.current.length < 3) {
+        lastMeteorTimeRef.current = time
+        const meteorColors = ['#c084fc', '#a855f7', '#ffffff']
+        meteorsRef.current.push({
+          x: Math.random() * width,
+          y: -20,
+          vx: Math.random() * 3 + 3,
+          vy: Math.random() * 4 + 4,
+          length: Math.random() * 70 + 80,
+          opacity: 1,
+          color: meteorColors[Math.floor(Math.random() * meteorColors.length)],
+        })
+      }
+
+      // Update and draw meteorites
+      meteorsRef.current = meteorsRef.current.filter((meteor) => {
+        meteor.x += meteor.vx
+        meteor.y += meteor.vy
+        meteor.opacity -= 0.012
+
+        if (meteor.opacity <= 0 || meteor.y > height) {
+          return false
+        }
+
+        // Draw gradient trail
+        const trailGradient = ctx.createLinearGradient(
+          meteor.x,
+          meteor.y,
+          meteor.x - meteor.vx * meteor.length,
+          meteor.y - meteor.vy * meteor.length
+        )
+        trailGradient.addColorStop(0, `${meteor.color}${Math.floor(meteor.opacity * 255).toString(16).padStart(2, '0')}`)
+        trailGradient.addColorStop(1, `${meteor.color}00`)
+
+        ctx.strokeStyle = trailGradient
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(meteor.x, meteor.y)
+        ctx.lineTo(
+          meteor.x - meteor.vx * meteor.length,
+          meteor.y - meteor.vy * meteor.length
+        )
+        ctx.stroke()
+
+        return true
       })
 
       animationIdRef.current = requestAnimationFrame(animate)
@@ -237,13 +326,13 @@ export default function GalaxyBackground() {
     // Event listeners
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseleave', handleMouseLeave)
-    window.addEventListener('resize', setCanvasSize)
+    window.addEventListener('resize', handleResize)
 
     // Cleanup
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseleave', handleMouseLeave)
-      window.removeEventListener('resize', setCanvasSize)
+      window.removeEventListener('resize', handleResize)
       if (animationIdRef.current !== null) {
         cancelAnimationFrame(animationIdRef.current)
       }
@@ -257,6 +346,7 @@ export default function GalaxyBackground() {
       style={{
         display: 'block',
         background: '#000000',
+        willChange: 'transform',
       }}
     />
   )
