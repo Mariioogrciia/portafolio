@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
 
 const projects = [
   {
@@ -35,33 +34,8 @@ const projects = [
 ]
 
 export function ProjectsGrid() {
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  })
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8 },
-    },
-  }
-
   return (
-    <section id="projects" ref={ref} className="relative py-20 px-4 bg-transparent z-10">
+    <section id="projects" className="relative py-20 px-4 bg-transparent z-10">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4">
@@ -72,19 +46,16 @@ export function ProjectsGrid() {
           </p>
         </div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-        >
-          {projects.map((project) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map((project, index) => (
             <motion.a
               key={project.id}
               href={project.link}
-              variants={itemVariants}
-              whileHover={{ scale: 1.02, y: -5 }}
-              className="group relative p-6 rounded-2xl bg-[#0d0d0d] border border-purple-900/30 hover:border-purple-500/50 transition-all duration-300 overflow-hidden"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="group relative p-6 rounded-2xl bg-[#0d0d0d] border border-purple-900/30 hover:border-purple-500/50 transition-all duration-300 overflow-hidden cursor-pointer"
             >
               {/* Línea de gradiente morado en el top */}
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -92,7 +63,7 @@ export function ProjectsGrid() {
               {/* Glow morado en hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 via-transparent to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-transparent group-hover:to-purple-600/10 transition-all duration-300 pointer-events-none" />
 
-              <div className="relative z-10">
+              <div className="relative z-10 group-hover:scale-105 transition-transform duration-300">
                 <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
                 <p className="text-zinc-400 text-sm mb-4">{project.description}</p>
 
@@ -115,7 +86,7 @@ export function ProjectsGrid() {
               </div>
             </motion.a>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useScrollDirection } from '@/app/hooks/useScrollDirection'
+import { useActiveSection } from '@/app/hooks/useActiveSection'
 
 interface NavLink {
   label: string
@@ -18,47 +19,6 @@ const navLinks: NavLink[] = [
   { label: 'Certificaciones', href: '#certifications', id: 'certifications' },
   { label: 'Contacto', href: '#contact', id: 'contact' },
 ]
-
-const useActiveSection = () => {
-  const [activeSection, setActiveSection] = useState<string>('hero')
-
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.3,
-      rootMargin: '-50px 0px -50px 0px',
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id
-          if (sectionId) {
-            setActiveSection(sectionId)
-          }
-        }
-      })
-    }, observerOptions)
-
-    // Observe all sections
-    navLinks.forEach(({ id }) => {
-      const element = document.getElementById(id)
-      if (element) {
-        observer.observe(element)
-      }
-    })
-
-    return () => {
-      navLinks.forEach(({ id }) => {
-        const element = document.getElementById(id)
-        if (element) {
-          observer.unobserve(element)
-        }
-      })
-    }
-  }, [])
-
-  return activeSection
-}
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -105,23 +65,26 @@ export default function Navbar() {
             {navLinks.map((link) => {
               const isActive = activeSection === link.id
               return (
-                <motion.a
+                <motion.div
                   key={link.id}
-                  href={link.href}
-                  onClick={handleNavClick}
-                  className="relative text-sm text-zinc-400 hover:text-purple-400 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500"
-                  whileHover={{ scale: 1.05 }}
+                  className="relative overflow-visible"
                 >
-                  {link.label}
+                  <motion.a
+                    href={link.href}
+                    onClick={handleNavClick}
+                    className="relative text-sm text-zinc-400 hover:text-purple-400 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 block py-2"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    {link.label}
+                  </motion.a>
                   {isActive && (
                     <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute bottom-0 left-0 right-0 h-1 bg-purple-500 rounded-full"
-                      initial={false}
-                      transition={{ duration: 0.3 }}
+                      layoutId="activeTab"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-400 rounded-full"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                </motion.a>
+                </motion.div>
               )
             })}
           </div>
