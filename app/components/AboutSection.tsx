@@ -1,6 +1,24 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Code2, Database, Cloud, GitBranch } from 'lucide-react'
+
+const skills = [
+  { name: 'React', icon: Code2, category: 'Frontend' },
+  { name: 'Next.js', icon: Code2, category: 'Frontend' },
+  { name: 'TypeScript', icon: Code2, category: 'Frontend' },
+  { name: 'Python', icon: Code2, category: 'Backend' },
+  { name: 'Azure', icon: Cloud, category: 'Cloud' },
+  { name: 'SQL', icon: Database, category: 'Database' },
+  { name: 'Tailwind CSS', icon: Code2, category: 'Styling' },
+  { name: 'Git', icon: GitBranch, category: 'Tools' },
+]
+
+const timeline = [
+  { year: '2022', title: 'DAM', description: 'Desarrollador de Aplicaciones Multiplataforma' },
+  { year: '2024', title: 'Prácticas', description: 'Experiencia en Bidatia' },
+  { year: '2025', title: 'Máster', description: 'IA & Big Data en curso' },
+]
 
 export function AboutSection() {
   const containerVariants = {
@@ -26,82 +44,105 @@ export function AboutSection() {
 
   return (
     <section id="about" className="relative w-full py-20 px-4 bg-transparent">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <motion.div
-          className="grid md:grid-cols-2 gap-12 items-center"
+          className="space-y-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
         >
-          {/* Left: Text Content */}
-          <div className="space-y-6">
-            <motion.h2
-              variants={itemVariants}
-              className="text-4xl md:text-5xl font-black"
-              style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #a78bfa 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Sobre mí
-            </motion.h2>
+          {/* Header */}
+          <motion.h2
+            variants={itemVariants}
+            className="text-4xl md:text-5xl font-black"
+            style={{
+              background: 'linear-gradient(135deg, #ffffff 0%, #a78bfa 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            Sobre mí
+          </motion.h2>
 
-            <motion.p
-              variants={itemVariants}
-              className="text-zinc-400 text-lg leading-relaxed"
-            >
-              Soy <span className="text-white font-semibold">Mario García</span>, desarrollador junior Full Stack apasionado por la tecnología y la innovación. Tengo el título de DAM (Desarrollo de Aplicaciones Multiplataforma) y actualmente estoy cursando un Máster en IA & Big Data.
-            </motion.p>
+          {/* Two columns layout */}
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* Left: Text Content */}
+            <div className="space-y-6">
+              <motion.p
+                variants={itemVariants}
+                className="text-zinc-400 text-lg leading-relaxed"
+              >
+                Soy <span className="text-white font-semibold">Mario García</span>, desarrollador junior Full Stack apasionado por la tecnología y la innovación. Tengo el título de DAM (Desarrollo de Aplicaciones Multiplataforma) y actualmente estoy cursando un Máster en IA & Big Data.
+              </motion.p>
 
-            <motion.p
-              variants={itemVariants}
-              className="text-zinc-400 text-lg leading-relaxed"
-            >
-              Me especializo en <span className="text-purple-400">React, Next.js, Python</span> y soluciones cloud con <span className="text-purple-400">Azure</span>. Mi pasión son los proyectos que combinan Machine Learning, automatización inteligente y desarrollo web moderno.
-            </motion.p>
+              <motion.p
+                variants={itemVariants}
+                className="text-zinc-400 text-lg leading-relaxed"
+              >
+                Me especializo en <span className="text-purple-400">React, Next.js, Python</span> y soluciones cloud con <span className="text-purple-400">Azure</span>. Mi pasión son los proyectos que combinan Machine Learning, automatización inteligente y desarrollo web moderno.
+              </motion.p>
 
-            <motion.p
-              variants={itemVariants}
-              className="text-zinc-400 text-lg leading-relaxed"
-            >
-              Estoy buscando mi primera oportunidad en empresa para crecer como desarrollador y contribuir con soluciones innovadoras que generen valor real.
-            </motion.p>
+              <motion.p
+                variants={itemVariants}
+                className="text-zinc-400 text-lg leading-relaxed"
+              >
+                Estoy buscando mi primera oportunidad en empresa para crecer como desarrollador y contribuir con soluciones innovadoras que generen valor real.
+              </motion.p>
+            </div>
 
+            {/* Right: Skills Grid */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap gap-3 pt-4"
+              className="grid grid-cols-2 gap-3"
             >
-              {['React', 'Next.js', 'Python', 'TypeScript', 'Azure', 'PostgreSQL'].map((tech) => (
-                <span
-                  key={tech}
-                  className="px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 text-sm text-purple-300"
-                >
-                  {tech}
-                </span>
-              ))}
+              {skills.map((skill) => {
+                const Icon = skill.icon
+                return (
+                  <motion.div
+                    key={skill.name}
+                    className="p-4 rounded-lg bg-white/5 border border-purple-500/30 hover:border-purple-400 hover:bg-white/10 transition-all duration-300 group"
+                    whileHover={{ y: -2, boxShadow: '0 0 20px rgba(168, 85, 247, 0.1)' }}
+                  >
+                    <Icon className="w-5 h-5 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
+                    <p className="text-sm font-semibold text-white">{skill.name}</p>
+                    <p className="text-xs text-zinc-500">{skill.category}</p>
+                  </motion.div>
+                )
+              })}
             </motion.div>
           </div>
 
-          {/* Right: Stats */}
-          <motion.div className="space-y-6">
-            {[
-              { label: 'DAM Completado', value: '✓' },
-              { label: 'Máster IA & Big Data', value: 'En curso' },
-              { label: 'Proyectos personales', value: '+5' },
-              { label: 'Stack especializado', value: '4+' },
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                variants={itemVariants}
-                className="p-4 rounded-lg bg-white/5 border border-white/10 hover:border-purple-500/30 hover:bg-white/10 transition-all duration-300"
-              >
-                <p className="text-zinc-500 text-sm mb-1">{stat.label}</p>
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
-              </motion.div>
-            ))}
+          {/* Timeline */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <h3 className="text-2xl font-bold text-white">Trayectoria</h3>
+            <div className="space-y-4">
+              {timeline.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  className="flex gap-4"
+                  whileInView={{ opacity: [0, 1], x: [-20, 0] }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.2 }}
+                >
+                  {/* Timeline dot */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-3 h-3 rounded-full bg-purple-500 mt-2" />
+                    {idx < timeline.length - 1 && (
+                      <div className="w-0.5 h-12 bg-gradient-to-b from-purple-500/50 to-transparent" />
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="pb-4">
+                    <p className="text-sm font-semibold text-purple-400">{item.year}</p>
+                    <p className="text-lg font-bold text-white">{item.title}</p>
+                    <p className="text-sm text-zinc-400">{item.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </motion.div>
       </div>

@@ -10,6 +10,8 @@ import { TechMarquee } from './components/TechMarquee'
 import { HorizontalTimeline } from './components/HorizontalTimeline'
 import { CertificationsSection } from './components/CertificationsSection'
 import { ContactSectionNew } from './components/ContactSectionNew'
+import { Footer } from './components/Footer'
+import { ScrollToTopButton } from './components/ScrollToTopButton'
 
 export default function Home() {
   return (
@@ -23,6 +25,9 @@ export default function Home() {
       {/* Fixed scroll progress bar (z-50) */}
       <ScrollProgressBar />
 
+      {/* Scroll to top button (z-40) */}
+      <ScrollToTopButton />
+
       {/* Main content (z-10) */}
       <div className="relative z-10 pt-16">
         <HeroSection />
@@ -34,11 +39,7 @@ export default function Home() {
         <ContactSectionNew />
 
         {/* Footer */}
-        <footer className="relative py-8 px-4 border-t border-white/5 bg-black/40 backdrop-blur">
-          <div className="max-w-6xl mx-auto text-center text-zinc-500 text-sm">
-            <p>© 2024 Mario García. Todos los derechos reservados.</p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </main>
   )
