@@ -15,6 +15,7 @@ const technologies = [
   'SQL',
   'Git',
   'Vercel',
+  'Java'
 ]
 
 export function TechMarquee() {

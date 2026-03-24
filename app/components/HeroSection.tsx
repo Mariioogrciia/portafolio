@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { useTypingEffect } from '@/app/hooks/useTypingEffect'
 import { SplitTextReveal } from './SplitTextReveal'
-import { Cube3D } from './Cube3D'
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -120,10 +119,6 @@ export function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Cube3D (solo desktop) */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-40 h-40">
-          <Cube3D />
-        </div>
       </div>
 
       {/* Scroll Indicator */}
