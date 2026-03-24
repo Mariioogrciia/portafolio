@@ -12,10 +12,10 @@ const projects = [
   },
   {
     id: 2,
-    title: 'Plataforma de Estadísticas de Fútbol Municipal',
-    description: 'Dashboard de estadísticas de partidos y jugadores en tiempo real',
+    title: 'Plataforma Web Impersed Cubiertas FC',
+    description: 'Web completa para la gestión de un equipo de fútbol sala real con estadísticas, apuestas y panel admin',
     tags: ['Next.js', 'TypeScript', 'Supabase', 'MongoDB'],
-    link: 'https://github.com/Mariioogrciia',
+    link: '/projects/futbol',
   },
   {
     id: 3,
