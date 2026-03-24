@@ -36,7 +36,7 @@ export function Footer() {
           {/* Main text */}
           <motion.p
             variants={itemVariants}
-            className="text-center text-zinc-400 text-sm"
+            className="text-center text-gray-300 text-sm"
           >
             Mario García © {currentYear} · Hecho con Next.js y{' '}
             <span className="text-amber-600">☕</span>
@@ -51,7 +51,7 @@ export function Footer() {
               href="https://github.com/Mariioogrciia"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-400 hover:text-purple-400 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-purple-500 rounded-lg p-2"
+              className="text-gray-300 hover:text-purple-400 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-purple-500 rounded-lg p-2"
               aria-label="GitHub"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.95 }}
@@ -63,7 +63,7 @@ export function Footer() {
               href="https://linkedin.com/in/mario-garcía"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-400 hover:text-blue-400 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-blue-500 rounded-lg p-2"
+              className="text-gray-300 hover:text-blue-400 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-blue-500 rounded-lg p-2"
               aria-label="LinkedIn"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.95 }}
@@ -75,7 +75,7 @@ export function Footer() {
           {/* Tech stack text */}
           <motion.p
             variants={itemVariants}
-            className="text-center text-zinc-600 text-xs"
+            className="text-center text-gray-400 text-xs"
           >
             Diseñado y desarrollado con Next.js, Tailwind CSS y Framer Motion
           </motion.p>

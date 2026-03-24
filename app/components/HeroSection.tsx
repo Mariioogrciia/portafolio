@@ -59,7 +59,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0 }}
             className="mb-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-700/30">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/70 backdrop-blur-sm border border-purple-500/60">
               <motion.div
                 className="w-2 h-2 rounded-full bg-green-500"
                 animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
@@ -75,6 +75,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             className="text-7xl sm:text-8xl md:text-9xl font-black text-center text-white leading-none tracking-tight mb-6"
+            style={{ textShadow: "0 0 80px rgba(0,0,0,1), 0 2px 20px rgba(0,0,0,0.9)" }}
           >
             Desarrollador<br />
             <span className="text-purple-400">Full Stack</span>
@@ -87,7 +88,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mb-12 min-h-16 flex items-center justify-center"
           >
-            <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: "0 0 40px rgba(0,0,0,0.8)" }}>
               {displayedText}
               {cursorVisible && <span className="animate-pulse">|</span>}
             </p>
@@ -114,7 +115,7 @@ export function HeroSection() {
 
             <motion.a
               href="#contact"
-              className="px-8 py-3 border border-zinc-700 text-zinc-300 font-semibold rounded-lg hover:border-purple-500/50 hover:text-purple-300 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500"
+              className="px-8 py-3 border border-gray-500 text-gray-200 font-semibold rounded-lg hover:border-purple-500/50 hover:text-white transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Ir a contacto"

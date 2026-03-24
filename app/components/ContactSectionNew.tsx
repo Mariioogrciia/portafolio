@@ -73,6 +73,7 @@ export function ContactSectionNew() {
 
   return (
     <section id="contact" className="relative min-h-screen w-full flex items-center justify-center px-4 py-20 bg-transparent z-10">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] -z-20 rounded-none" />
       <ParticleExplosion particles={particles} />
 
       <motion.div
@@ -84,7 +85,8 @@ export function ContactSectionNew() {
       >
         <motion.h2
           variants={itemVariants}
-          className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 text-center"
+          className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 text-center"
+          style={{ textShadow: "0 0 40px rgba(0,0,0,0.8)" }}
         >
           Hablemos de tu
           <br />
@@ -93,7 +95,7 @@ export function ContactSectionNew() {
 
         <motion.p
           variants={itemVariants}
-          className="text-lg text-zinc-400 mb-12 max-w-xl mx-auto text-center"
+          className="text-lg text-gray-200 mb-12 max-w-xl mx-auto text-center"
         >
           Estoy disponible para nuevos proyectos y colaboraciones. Contactame para discutir tu idea.
         </motion.p>
@@ -111,7 +113,7 @@ export function ContactSectionNew() {
             placeholder="Tu nombre"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300"
+            className="w-full px-4 py-3 bg-black/70 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300"
             required
           />
 
@@ -122,7 +124,7 @@ export function ContactSectionNew() {
             placeholder="Tu email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300"
+            className="w-full px-4 py-3 bg-black/70 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300"
             required
           />
 
@@ -133,7 +135,7 @@ export function ContactSectionNew() {
             value={formData.message}
             onChange={handleChange}
             rows={5}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300 resize-none"
+            className="w-full px-4 py-3 bg-black/70 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-0 transition-colors duration-300 resize-none"
             required
           />
 
@@ -179,7 +181,7 @@ export function ContactSectionNew() {
             href="https://linkedin.com/in/mario-garcia-romero-453348304"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 border border-zinc-700 text-zinc-300 font-semibold rounded-lg hover:border-purple-500/50 hover:text-purple-300 transition-all duration-300 flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+            className="px-6 py-3 border border-gray-500 text-gray-200 font-semibold rounded-lg hover:border-purple-500/50 hover:text-white transition-all duration-300 flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Ir a LinkedIn"
@@ -202,7 +204,7 @@ export function ContactSectionNew() {
                 href={social.url}
                 target={social.url.startsWith('mailto') ? undefined : '_blank'}
                 rel={social.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                className={`text-zinc-400 transition-colors duration-300 ${social.color} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 rounded-lg p-2`}
+                className={`text-gray-300 transition-colors duration-300 ${social.color} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 rounded-lg p-2`}
                 whileHover={{ scale: 1.2, y: -5 }}
                 whileTap={{ scale: 0.95 }}
                 title={social.label}
@@ -215,7 +217,7 @@ export function ContactSectionNew() {
         </motion.div>
 
         {/* Texto adicional */}
-        <motion.p variants={itemVariants} className="mt-8 text-sm text-zinc-500 text-center">
+        <motion.p variants={itemVariants} className="mt-8 text-sm text-gray-400 text-center">
           Sígueme en mis redes sociales
         </motion.p>
       </motion.div>

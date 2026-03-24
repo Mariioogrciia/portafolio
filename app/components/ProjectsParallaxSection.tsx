@@ -36,12 +36,13 @@ const projects = [
 export function ProjectsGrid() {
   return (
     <section id="projects" className="relative py-20 px-4 bg-transparent z-10">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] -z-10 rounded-none" />
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4" style={{ textShadow: "0 0 40px rgba(0,0,0,0.8)" }}>
             Proyectos Destacados
           </h2>
-          <p className="text-zinc-400 text-lg">
+          <p className="text-gray-300 text-lg">
             Algunos de mis trabajos más recientes y representativos
           </p>
         </div>
@@ -55,7 +56,8 @@ export function ProjectsGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group relative p-6 rounded-2xl bg-[#0d0d0d] border border-purple-900/30 hover:border-purple-500/50 transition-all duration-300 overflow-hidden cursor-pointer"
+              className="group relative p-6 rounded-2xl bg-black/70 backdrop-blur-md border border-white/20 hover:border-purple-400 transition-all duration-300 overflow-hidden cursor-pointer"
+              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)" }}
             >
               {/* Línea de gradiente morado en el top */}
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -65,7 +67,7 @@ export function ProjectsGrid() {
 
               <div className="relative z-10 group-hover:scale-105 transition-transform duration-300">
                 <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                <p className="text-zinc-400 text-sm mb-4">{project.description}</p>
+                <p className="text-gray-300 text-sm mb-4">{project.description}</p>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">

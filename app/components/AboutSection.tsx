@@ -44,6 +44,7 @@ export function AboutSection() {
 
   return (
     <section id="about" className="relative w-full py-20 px-4 bg-transparent">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] -z-10 rounded-none" />
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="space-y-12"
@@ -55,13 +56,8 @@ export function AboutSection() {
           {/* Header */}
           <motion.h2
             variants={itemVariants}
-            className="text-4xl md:text-5xl font-black"
-            style={{
-              background: 'linear-gradient(135deg, #ffffff 0%, #a78bfa 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
+            className="text-4xl md:text-5xl font-bold text-white"
+            style={{ textShadow: "0 0 40px rgba(0,0,0,0.8)" }}
           >
             Sobre mí
           </motion.h2>
@@ -72,21 +68,21 @@ export function AboutSection() {
             <div className="space-y-6">
               <motion.p
                 variants={itemVariants}
-                className="text-zinc-400 text-lg leading-relaxed"
+                className="text-gray-100 text-lg leading-relaxed"
               >
                 Soy <span className="text-white font-semibold">Mario García</span>, desarrollador junior Full Stack apasionado por la tecnología y la innovación. Tengo el título de DAM (Desarrollo de Aplicaciones Multiplataforma) y actualmente estoy cursando un Máster en IA & Big Data.
               </motion.p>
 
               <motion.p
                 variants={itemVariants}
-                className="text-zinc-400 text-lg leading-relaxed"
+                className="text-gray-100 text-lg leading-relaxed"
               >
                 Me especializo en <span className="text-purple-400">React, Next.js, Python</span> y soluciones cloud con <span className="text-purple-400">Azure</span>. Mi pasión son los proyectos que combinan Machine Learning, automatización inteligente y desarrollo web moderno.
               </motion.p>
 
               <motion.p
                 variants={itemVariants}
-                className="text-zinc-400 text-lg leading-relaxed"
+                className="text-gray-100 text-lg leading-relaxed"
               >
                 Estoy buscando mi primera oportunidad en empresa para crecer como desarrollador y contribuir con soluciones innovadoras que generen valor real.
               </motion.p>
@@ -102,12 +98,12 @@ export function AboutSection() {
                 return (
                   <motion.div
                     key={skill.name}
-                    className="p-4 rounded-lg bg-white/5 border border-purple-500/30 hover:border-purple-400 hover:bg-white/10 transition-all duration-300 group"
+                    className="p-4 rounded-lg bg-black/70 backdrop-blur-md border border-white/20 hover:border-purple-400 hover:bg-black/80 transition-all duration-300 group"
                     whileHover={{ y: -2, boxShadow: '0 0 20px rgba(168, 85, 247, 0.1)' }}
                   >
                     <Icon className="w-5 h-5 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
                     <p className="text-sm font-semibold text-white">{skill.name}</p>
-                    <p className="text-xs text-zinc-500">{skill.category}</p>
+                    <p className="text-xs text-gray-400">{skill.category}</p>
                   </motion.div>
                 )
               })}
@@ -138,7 +134,7 @@ export function AboutSection() {
                   <div className="pb-4">
                     <p className="text-sm font-semibold text-purple-400">{item.year}</p>
                     <p className="text-lg font-bold text-white">{item.title}</p>
-                    <p className="text-sm text-zinc-400">{item.description}</p>
+                    <p className="text-sm text-gray-300">{item.description}</p>
                   </div>
                 </motion.div>
               ))}

@@ -43,9 +43,10 @@ export function HorizontalTimeline() {
 
   return (
     <section ref={containerRef} className="relative py-20 bg-black overflow-hidden">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] -z-10 rounded-none" />
       <div className="max-w-7xl mx-auto px-4 mb-12">
         <h2 className="text-4xl font-bold text-white mb-2">Mi Trayectoria</h2>
-        <p className="text-zinc-400">Evolución profesional año a año</p>
+        <p className="text-gray-300">Evolución profesional año a año</p>
       </div>
 
       <div className="relative h-96 flex items-center overflow-visible">
@@ -68,9 +69,10 @@ export function HorizontalTimeline() {
             >
               {/* Card */}
               <motion.div
-                className="relative h-64 rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-transparent p-6 flex flex-col justify-between overflow-hidden"
+                className="relative h-64 rounded-xl border border-white/20 bg-black/70 backdrop-blur-md p-6 flex flex-col justify-between overflow-hidden"
                 whileHover={{ borderColor: 'rgba(168, 85, 247, 0.8)', scale: 1.02 }}
                 transition={{ duration: 0.3 }}
+                style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)" }}
               >
                 {/* Glow effect on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -91,7 +93,7 @@ export function HorizontalTimeline() {
                 {/* Content */}
                 <div className="relative z-10 mt-4">
                   <h3 className="text-lg font-bold text-white mb-2 line-clamp-2">{item.title}</h3>
-                  <p className="text-sm text-zinc-400 line-clamp-3">{item.description}</p>
+                  <p className="text-sm text-gray-300 line-clamp-3">{item.description}</p>
                 </div>
 
                 {/* Progress indicator */}
@@ -117,7 +119,7 @@ export function HorizontalTimeline() {
       </div>
 
       {/* Info text */}
-      <div className="text-center mt-8 text-zinc-500 text-sm">
+      <div className="text-center mt-8 text-gray-400 text-sm">
         <p>Desplázate para explorar mi evolución profesional</p>
       </div>
     </section>

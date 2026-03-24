@@ -85,6 +85,7 @@ export function CertificationsSection() {
 
   return (
     <section id="certifications" className="relative w-full py-20 px-4 bg-transparent">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] -z-10 rounded-none" />
       <div className="max-w-6xl mx-auto">
         {/* Header con stats */}
         <motion.div
@@ -95,30 +96,25 @@ export function CertificationsSection() {
           viewport={{ once: true, margin: '-100px' }}
         >
           <motion.h2
-            className="text-4xl md:text-5xl font-black mb-6"
-            style={{
-              background: 'linear-gradient(135deg, #ffffff 0%, #a78bfa 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
+            className="text-4xl md:text-5xl font-bold text-white mb-6"
+            style={{ textShadow: "0 0 40px rgba(0,0,0,0.8)" }}
           >
             Certificaciones Microsoft
           </motion.h2>
 
           <div className="flex flex-col sm:flex-row gap-6 mt-8">
             <motion.div
-              className="p-6 rounded-lg bg-white/5 border border-white/10"
+              className="p-6 rounded-lg bg-black/70 backdrop-blur-md border border-white/20"
               variants={statsVariants}
             >
-              <p className="text-zinc-500 text-sm mb-2">Certificaciones activas</p>
+              <p className="text-gray-400 text-sm mb-2">Certificaciones activas</p>
               <p className="text-4xl font-bold text-white">4</p>
             </motion.div>
             <motion.div
-              className="p-6 rounded-lg bg-white/5 border border-white/10"
+              className="p-6 rounded-lg bg-black/70 backdrop-blur-md border border-white/20"
               variants={statsVariants}
             >
-              <p className="text-zinc-500 text-sm mb-2">Especialidades</p>
+              <p className="text-gray-400 text-sm mb-2">Especialidades</p>
               <p className="text-lg text-purple-400 font-semibold">Azure · Fabric · AI · Data</p>
             </motion.div>
           </div>
@@ -136,7 +132,8 @@ export function CertificationsSection() {
             <motion.div
               key={cert.id}
               variants={itemVariants}
-              className="group p-6 rounded-lg bg-white/5 border border-white/10 hover:border-purple-500/60 hover:bg-white/10 transition-all duration-300"
+              className="group p-6 rounded-lg bg-black/70 backdrop-blur-md border border-white/20 hover:border-purple-400 hover:bg-black/80 transition-all duration-300"
+              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)" }}
               whileHover={{ scale: 1.02 }}
             >
               <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
@@ -158,16 +155,16 @@ export function CertificationsSection() {
                 <div className="flex-grow">
                   <h3 className="text-lg font-semibold text-white mb-2">{cert.name}</h3>
                   <p className="text-purple-400 text-sm font-medium mb-3">Microsoft Learn</p>
-                  <div className="flex flex-col sm:flex-row gap-4 text-sm text-zinc-400 mb-4">
+                  <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-300 mb-4">
                     <span>
                       📅 {cert.issued}
                       {cert.expires !== 'Sin vencimiento' && ` · ${cert.expires}`}
                     </span>
                     {cert.credentialId && (
-                      <span className="text-zinc-600">ID: {cert.credentialId}</span>
+                      <span className="text-gray-400">ID: {cert.credentialId}</span>
                     )}
                     {!cert.credentialId && (
-                      <span className="text-zinc-600">Sin vencimiento</span>
+                      <span className="text-gray-400">Sin vencimiento</span>
                     )}
                   </div>
 
