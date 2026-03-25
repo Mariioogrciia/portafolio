@@ -1,15 +1,11 @@
 'use client'
 
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { useTypingEffect } from '@/app/hooks/useTypingEffect'
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-  })
-  const scrollOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0])
 
   const { displayedText, cursorVisible } = useTypingEffect(
     'Especializado en React, Next.js, Python y Azure.',
@@ -52,6 +48,28 @@ export function HeroSection() {
           initial="hidden"
           animate="visible"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mb-8 flex justify-center"
+          >
+            <motion.div
+              className="relative h-[150px] w-[150px] rounded-full p-[3px]"
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+              aria-hidden="true"
+              style={{
+                background:
+                  'conic-gradient(from 0deg, rgba(168,85,247,0.9), rgba(59,130,246,0.9), rgba(168,85,247,0.9))',
+              }}
+            >
+              <div className="h-full w-full rounded-full bg-black/85 flex items-center justify-center border border-white/10">
+                <span className="text-xs tracking-[0.2em] text-zinc-300">FOTO</span>
+              </div>
+            </motion.div>
+          </motion.div>
+
           {/* Badge con punto pulsante */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -122,28 +140,22 @@ export function HeroSection() {
             >
               Contactar
             </motion.a>
+
+            <motion.a
+              href="/cv-mario-garcia.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3 border border-purple-400/60 text-purple-200 font-semibold rounded-lg hover:border-purple-300 hover:text-white hover:bg-purple-500/10 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Descargar CV en PDF"
+            >
+              Descargar CV
+            </motion.a>
           </motion.div>
         </motion.div>
 
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1 }}
-        style={{ opacity: scrollOpacity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <span className="text-sm text-zinc-500">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 border border-zinc-600 rounded-full flex items-center justify-center"
-        >
-          <motion.div className="w-1 h-2 bg-zinc-500 rounded-full" />
-        </motion.div>
-      </motion.div>
     </section>
   )
 }

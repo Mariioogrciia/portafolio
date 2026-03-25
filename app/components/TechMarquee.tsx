@@ -15,7 +15,7 @@ const technologies = [
   'SQL',
   'Git',
   'Vercel',
-  'Java'
+  'Java',
 ]
 
 export function TechMarquee() {
@@ -36,9 +36,9 @@ export function TechMarquee() {
               ease: 'linear',
             }}
           >
-            {[...technologies, ...technologies].map((tech, index) => (
+            {technologies.map((tech) => (
               <div
-                key={index}
+                key={tech}
                 className="px-6 py-3 rounded-full bg-white/5 border border-purple-500/20 text-zinc-400 whitespace-nowrap"
               >
                 {tech}

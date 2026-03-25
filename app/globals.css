@@ -33,17 +33,17 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7c3aed;
+  background: #22c55e;
   border-radius: 4px;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a855f7;
+  background: #16a34a;
 }
 
 /* Noise texture */

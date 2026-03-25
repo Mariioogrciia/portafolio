@@ -14,12 +14,6 @@ const skills = [
   { name: 'Git', icon: GitBranch, category: 'Tools' },
 ]
 
-const timeline = [
-  { year: '2022', title: 'DAM', description: 'Desarrollador de Aplicaciones Multiplataforma' },
-  { year: '2024', title: 'Prácticas', description: 'Experiencia en Bidatia' },
-  { year: '2025', title: 'Máster', description: 'IA & Big Data en curso' },
-]
-
 export function AboutSection() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -70,22 +64,34 @@ export function AboutSection() {
                 variants={itemVariants}
                 className="text-gray-100 text-lg leading-relaxed"
               >
-                Soy <span className="text-white font-semibold">Mario García</span>, desarrollador junior Full Stack apasionado por la tecnología y la innovación. Tengo el título de DAM (Desarrollo de Aplicaciones Multiplataforma) y actualmente estoy cursando un Máster en IA & Big Data.
+                Transformo ideas complejas en productos digitales que automatizan procesos reales y generan impacto medible. Soy <span className="text-white font-semibold">Mario García</span>, desarrollador Full Stack con enfoque en soluciones prácticas para negocio.
               </motion.p>
 
               <motion.p
                 variants={itemVariants}
                 className="text-gray-100 text-lg leading-relaxed"
               >
-                Me especializo en <span className="text-purple-400">React, Next.js, Python</span> y soluciones cloud con <span className="text-purple-400">Azure</span>. Mi pasión son los proyectos que combinan Machine Learning, automatización inteligente y desarrollo web moderno.
+                Me especializo en <span className="text-purple-400">React, Next.js, Python</span> y arquitecturas cloud sobre <span className="text-purple-400">Azure</span>. Me apasiona construir sistemas de automatización inteligente y aplicaciones guiadas por datos que ahorren tiempo y mejoren decisiones.
               </motion.p>
 
               <motion.p
                 variants={itemVariants}
                 className="text-gray-100 text-lg leading-relaxed"
               >
-                Estoy buscando mi primera oportunidad en empresa para crecer como desarrollador y contribuir con soluciones innovadoras que generen valor real.
+                Disfruto trabajar en productos end-to-end: desde la lógica de negocio y el tratamiento de datos, hasta una experiencia de usuario clara, rápida y mantenible.
               </motion.p>
+
+              <motion.div variants={itemVariants} className="pt-2">
+                <h3 className="text-base font-semibold text-white mb-3">Idiomas</h3>
+                <div className="flex flex-wrap gap-2" aria-label="Idiomas hablados">
+                  <span className="px-3 py-1 text-sm rounded-full bg-white/5 border border-white/20 text-zinc-200">
+                    Español (Nativo)
+                  </span>
+                  <span className="px-3 py-1 text-sm rounded-full bg-white/5 border border-white/20 text-zinc-200">
+                    Inglés (Técnico - B2)
+                  </span>
+                </div>
+              </motion.div>
             </div>
 
             {/* Right: Skills Grid */}
@@ -110,36 +116,6 @@ export function AboutSection() {
             </motion.div>
           </div>
 
-          {/* Timeline */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-2xl font-bold text-white">Trayectoria</h3>
-            <div className="space-y-4">
-              {timeline.map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  className="flex gap-4"
-                  whileInView={{ opacity: [0, 1], x: [-20, 0] }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.2 }}
-                >
-                  {/* Timeline dot */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-3 h-3 rounded-full bg-purple-500 mt-2" />
-                    {idx < timeline.length - 1 && (
-                      <div className="w-0.5 h-12 bg-gradient-to-b from-purple-500/50 to-transparent" />
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="pb-4">
-                    <p className="text-sm font-semibold text-purple-400">{item.year}</p>
-                    <p className="text-lg font-bold text-white">{item.title}</p>
-                    <p className="text-sm text-gray-300">{item.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>

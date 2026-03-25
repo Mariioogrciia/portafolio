@@ -8,28 +8,27 @@ const projects = [
     title: 'Sistema de Predicción de Menús de Restaurantes',
     description: 'Automatización de lectura y predicción de menús con OCR y Azure ML',
     tags: ['Azure ML', 'Python', 'Document Intelligence', 'OCR'],
-    link: 'https://github.com/Mariioogrciia',
+    photo: '/images/CuisineAML/project1.png',
+    githubUrl: 'https://github.com/adnanhamidoun/lacuchara',
+    demoUrl: '',
   },
   {
     id: 2,
     title: 'Plataforma Web Impersed Cubiertas FC',
-    description: 'Web completa para la gestión de un equipo de fútbol sala real con estadísticas, apuestas y panel admin',
+    description: 'Web completa para la gestión de un equipo de fútbol 7 municipal real con estadísticas, panel de jugadores, apuestas (con puntos virtuales) y panel admin',
     tags: ['Next.js', 'TypeScript', 'Supabase', 'MongoDB'],
-    link: '/projects/futbol',
+    photo: '/images/impersed/project2.png',
+    githubUrl: 'https://github.com/Mariioogrciia/futbol7',
+    demoUrl: '/projects/futbol',
   },
   {
     id: 3,
-    title: 'Chatbot Inteligente con Azure',
-    description: 'Chatbot conversacional con QnA Maker y Azure Bot Service',
-    tags: ['Azure Language Service', 'Azure Bot Service', 'Python'],
-    link: 'https://github.com/Mariioogrciia',
-  },
-  {
-    id: 4,
-    title: 'Sistema de Procesamiento de Facturas',
-    description: 'Extracción automática de datos de facturas con Document Intelligence',
-    tags: ['Azure Document Intelligence', 'Logic Apps', 'PowerApps', 'SQL'],
-    link: 'https://github.com/Mariioogrciia',
+    title: 'Banco Web',
+    description: 'Mi TFM, fue mi TFM de DAM, una web bancaria con funcionalidades de login, registro, transferencia y gestión de tarjetas',
+    tags: ['Java', 'SpringBoot', 'SQL'],
+    photo: '/images/MABank/project3.png',
+    githubUrl: 'https://github.com/adnanhamidoun/TFG-BANCOWEB',
+    demoUrl: '',
   },
 ]
 
@@ -49,14 +48,13 @@ export function ProjectsGrid() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, index) => (
-            <motion.a
+            <motion.article
               key={project.id}
-              href={project.link}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group relative p-6 rounded-2xl bg-black/70 backdrop-blur-md border border-white/20 hover:border-purple-400 transition-all duration-300 overflow-hidden cursor-pointer"
+              className="group relative p-6 rounded-2xl bg-black/70 backdrop-blur-md border border-white/20 hover:border-purple-400 transition-all duration-300 overflow-hidden"
               style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)" }}
             >
               {/* Línea de gradiente morado en el top */}
@@ -66,6 +64,22 @@ export function ProjectsGrid() {
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 via-transparent to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-transparent group-hover:to-purple-600/10 transition-all duration-300 pointer-events-none" />
 
               <div className="relative z-10 group-hover:scale-105 transition-transform duration-300">
+                {project.photo ? (
+                  <img
+                    src={project.photo}
+                    alt={`Vista previa del proyecto ${project.title}`}
+                    className="mb-5 w-full rounded-xl border border-white/10 aspect-video object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div
+                    className="mb-5 w-full rounded-xl border border-white/10 bg-gradient-to-br from-purple-700/35 via-blue-700/25 to-zinc-900/80 aspect-video flex items-center justify-center"
+                    aria-label={`Placeholder visual del proyecto ${project.title}`}
+                  >
+                    <span className="text-sm text-zinc-300">Screenshot / GIF</span>
+                  </div>
+                )}
+
                 <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
                 <p className="text-gray-300 text-sm mb-4">{project.description}</p>
 
@@ -81,12 +95,26 @@ export function ProjectsGrid() {
                   ))}
                 </div>
 
-                {/* Link */}
-                <div className="text-purple-400 text-sm font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                  Ver proyecto →
+                <div className="flex items-center gap-3 pt-1" role="group" aria-label={`Enlaces del proyecto ${project.title}`}>
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-md border border-zinc-500 text-zinc-200 text-sm font-semibold hover:border-purple-400 hover:text-white transition-colors"
+                    aria-label={`Ver repositorio de ${project.title} en GitHub`}
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href={project.demoUrl || '#'}
+                    className="px-4 py-2 rounded-md border border-purple-500/50 text-purple-200 text-sm font-semibold hover:bg-purple-500/10 hover:text-white transition-colors"
+                    aria-label={`Ver detalles de ${project.title}`}
+                  >
+                    Ver Detalles
+                  </a>
                 </div>
               </div>
-            </motion.a>
+            </motion.article>
           ))}
         </div>
       </div>

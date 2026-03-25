@@ -6,9 +6,9 @@ import { ScrollProgressBar } from './components/ScrollProgressBar'
 import Navbar from './components/Navbar'
 import { HeroSection } from './components/HeroSection'
 import { AboutSection } from './components/AboutSection'
+import { ExperienceEducationSection } from './components/ExperienceEducationSection'
 import { ProjectsGrid } from './components/ProjectsParallaxSection'
 import { TechMarquee } from './components/TechMarquee'
-import { HorizontalTimeline } from './components/HorizontalTimeline'
 import { CertificationsSection } from './components/CertificationsSection'
 import { ContactSectionNew } from './components/ContactSectionNew'
 import { Footer } from './components/Footer'
@@ -35,9 +35,9 @@ export default function Home() {
       <div ref={contentRef} className="relative z-10 pt-16">
         <HeroSection />
         <AboutSection />
+        <ExperienceEducationSection />
         <ProjectsGrid />
         <TechMarquee />
-        <HorizontalTimeline />
         <CertificationsSection />
         <ContactSectionNew />
 
