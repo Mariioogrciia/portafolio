@@ -38,6 +38,8 @@ interface CursorState {
   x: number
   y: number
   active: boolean
+  lastMoveTime: number
+  speed: number
 }
 
 export default function GalaxyBackground() {
@@ -49,6 +51,8 @@ export default function GalaxyBackground() {
     x: -1000,
     y: -1000,
     active: false,
+    lastMoveTime: 0,
+    speed: 0,
   })
   const lastMeteorTimeRef = useRef<number>(0)
   const animationIdRef = useRef<number | null>(null)
@@ -110,7 +114,7 @@ export default function GalaxyBackground() {
             y: j * cellHeight + cellHeight / 2,
             originX: i * cellWidth + cellWidth / 2,
             originY: j * cellHeight + cellHeight / 2,
-            opacity: 0.4,
+            opacity: 0.16,
           })
         }
       }
@@ -121,9 +125,21 @@ export default function GalaxyBackground() {
 
     // Mouse move handler
     const handleMouseMove = (e: MouseEvent) => {
+      const now = performance.now()
+      const prevX = cursorRef.current.x
+      const prevY = cursorRef.current.y
+      const prevTime = cursorRef.current.lastMoveTime
+
+      if (prevTime > 0 && prevX > -999 && prevY > -999) {
+        const dt = Math.max(now - prevTime, 1)
+        const distance = Math.hypot(e.clientX - prevX, e.clientY - prevY)
+        cursorRef.current.speed = distance / dt
+      }
+
       cursorRef.current.x = e.clientX
       cursorRef.current.y = e.clientY
       cursorRef.current.active = true
+      cursorRef.current.lastMoveTime = now
     }
 
     // Mouse leave handler
@@ -131,6 +147,7 @@ export default function GalaxyBackground() {
       cursorRef.current.active = false
       cursorRef.current.x = -1000
       cursorRef.current.y = -1000
+      cursorRef.current.speed = 0
     }
 
     // Resize handler
@@ -199,11 +216,16 @@ export default function GalaxyBackground() {
         const dy = star.y - cursorRef.current.y
         const distance = Math.sqrt(dx * dx + dy * dy)
 
-        // Cursor repulsion (120px radius, 25px force)
-        const repulsionRadius = 120
-        if (distance < repulsionRadius && cursorRef.current.active) {
+        const timeSinceMove = time - cursorRef.current.lastMoveTime
+        const movementBoost = Math.min(cursorRef.current.speed * 0.035, 1)
+        const movementPulse = Math.max(0, 1 - timeSinceMove / 120)
+        const interaction = movementPulse * (0.45 + movementBoost)
+
+        // Smaller interaction radius with movement-driven force.
+        const repulsionRadius = 70
+        if (distance < repulsionRadius && cursorRef.current.active && interaction > 0.05) {
           const angle = Math.atan2(dy, dx)
-          const force = ((repulsionRadius - distance) / repulsionRadius) * 25
+          const force = ((repulsionRadius - distance) / repulsionRadius) * 12 * interaction
           star.vx += Math.cos(angle) * (force / 100)
           star.vy += Math.sin(angle) * (force / 100)
         }
@@ -247,25 +269,30 @@ export default function GalaxyBackground() {
         const dy = point.y - cursorRef.current.y
         const distance = Math.sqrt(dx * dx + dy * dy)
 
-        // Cursor repulsion
-        const repulsionRadius = 120
-        if (distance < repulsionRadius && cursorRef.current.active) {
+        const timeSinceMove = time - cursorRef.current.lastMoveTime
+        const movementBoost = Math.min(cursorRef.current.speed * 0.035, 1)
+        const movementPulse = Math.max(0, 1 - timeSinceMove / 120)
+        const interaction = movementPulse * (0.45 + movementBoost)
+
+        // Smaller and softer cursor radius with a stronger feel while moving.
+        const repulsionRadius = 75
+        if (distance < repulsionRadius && cursorRef.current.active && interaction > 0.05) {
           const angle = Math.atan2(dy, dx)
-          const force = (repulsionRadius - distance) / repulsionRadius * 25
+          const force = (repulsionRadius - distance) / repulsionRadius * 10 * interaction
           point.x += Math.cos(angle) * force
           point.y += Math.sin(angle) * force
-          point.opacity = 1
+          point.opacity = 0.45 + interaction * 0.25
         } else {
           // Lerp back to origin
           point.x += (point.originX - point.x) * 0.08
           point.y += (point.originY - point.y) * 0.08
-          point.opacity += (0.4 - point.opacity) * 0.1
+          point.opacity += (0.16 - point.opacity) * 0.1
         }
 
         // Draw grid point
         ctx.fillStyle = `rgba(168, 85, 247, ${point.opacity})`
         ctx.beginPath()
-        ctx.arc(point.x, point.y, 1.5, 0, Math.PI * 2)
+        ctx.arc(point.x, point.y, 1, 0, Math.PI * 2)
         ctx.fill()
       })
 
